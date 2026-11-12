@@ -20,11 +20,22 @@ namespace AllTrailsAPI.Controllers
 
         // GET api/trails
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<Trail>>> GetAll()
+        public async Task<ActionResult<IEnumerable<Trail>>> GetAllTrails()
         {
-            var sql = "SELECT * FROM Trail";
+            var sql = @"SELECT t.*, c.* 
+                FROM Trail t 
+                INNER JOIN Category c ON t.CategoryId = c.Id";
 
-            var trails = await _db.QueryAsync<Trail>(sql);
+            var trails = await _db.QueryAsync<Trail, Category, Trail>( // table 1, table 2, return type
+                sql,
+                (trail, category) =>
+                { 
+                    // function executes for each row returned
+                    trail.Category = category;
+                    return trail;
+                },
+                splitOn: "Id" // specify what column to split on (the second table's Id column in this case)
+                );
 
             return Ok(trails);
         }

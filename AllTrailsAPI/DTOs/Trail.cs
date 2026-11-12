@@ -11,5 +11,9 @@
         public string ImageUrl { get; set; } = string.Empty;
         public DateTime CreatedDate { get; set; }
         public int CategoryId { get; set; }
+
+        public Category Category { get; set; } = null!;
+
+        
     }
 }
