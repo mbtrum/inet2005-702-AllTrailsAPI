@@ -14,6 +14,7 @@
 
         public Category Category { get; set; } = null!;
 
-        
+        public List<Review> Reviews { get; set; } = null!;
+
     }
 }
